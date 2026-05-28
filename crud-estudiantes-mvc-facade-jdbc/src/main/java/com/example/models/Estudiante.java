@@ -10,12 +10,13 @@ public record Estudiante(
 
 			int id, 
 			String nombre, 
-			String primereApellido, 
+			String primerApellido, 
 			String segundoApellido,
 			LocalDate fechaMatriculacion, 
-			BigDecimal becas,
+			BigDecimal beca,
 			Genero genero,
-			int facultades_Idfacultades
+			int facultades_Idfacultades,
+			int numTotalAsignaturas
 			) {
 		
 	}

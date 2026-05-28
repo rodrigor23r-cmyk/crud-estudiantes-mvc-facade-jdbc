@@ -44,6 +44,7 @@
 				<th>Fecha de matriculación</th>
 				<th>Beca</th>
 				<th>Genero</th>
+				<th>Número Asignaturas</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -51,11 +52,12 @@
         	<% for (Estudiante estudiante : estudiantes) { %>
                 <tr>
 			<td><%= estudiante.nombre() %></td>
-            <td><%= estudiante.primereApellido() %></td>
+            <td><%= estudiante.primerApellido() %></td>
             <td><%= estudiante.segundoApellido() != null ? estudiante.segundoApellido() : "" %></td>
             <td><%= estudiante.fechaMatriculacion() %></td>
-            <td><%= estudiante.becas() %></td>
+            <td><%= estudiante.beca() %></td>
             <td><%= estudiante.genero() %></td>
+            <td><%= estudiante.numTotalAsignaturas() %></td>
                 </tr>
           <% } %>
           <!--  tr>td{<=empleado.() %>}*6 -->

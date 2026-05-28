@@ -29,12 +29,13 @@ List<Estudiante> estudiantes = new ArrayList<Estudiante>();
 				estudiantes.add(Estudiante.builder()
 						.id(rs.getInt("idestudiantes"))
 						.nombre(rs.getString("nombre"))
-						.primereApellido(rs.getString("primereApellido"))
+						.primerApellido(rs.getString("primerApellido"))
 						.segundoApellido(rs.getString("segundoApellido"))
 						.fechaMatriculacion(rs.getDate("fechaMatriculacion").toLocalDate())
-						.becas(new BigDecimal(rs.getDouble("becas")))
+						.beca(new BigDecimal(rs.getDouble("beca")))
 						.genero(Genero.valueOf(rs.getString("genero")))
 						.facultades_Idfacultades(rs.getInt("facultades_Idfacultades"))
+						.numTotalAsignaturas(rs.getInt("numTotalAsignaturas"))
 						.build());
 			}
 			

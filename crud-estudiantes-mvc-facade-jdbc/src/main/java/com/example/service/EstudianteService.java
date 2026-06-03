@@ -6,4 +6,7 @@ import com.example.models.Estudiante;
 
 public interface EstudianteService {
 	public abstract List<Estudiante> getEstudiantes();
+
+	public abstract void altaEstudiante(Estudiante estudiante, List<String> direccionesCorreo,
+			List<String> numerosTelefono);
 }

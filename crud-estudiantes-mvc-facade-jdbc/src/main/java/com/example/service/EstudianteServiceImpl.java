@@ -27,14 +27,14 @@ List<Estudiante> estudiantes = new ArrayList<Estudiante>();
 			while (rs.next()) {
 				
 				estudiantes.add(Estudiante.builder()
-						.id(rs.getInt("idestudiantes"))
+						.id(rs.getInt("id"))
 						.nombre(rs.getString("nombre"))
 						.primerApellido(rs.getString("primerApellido"))
 						.segundoApellido(rs.getString("segundoApellido"))
 						.fechaMatriculacion(rs.getDate("fechaMatriculacion").toLocalDate())
 						.beca(new BigDecimal(rs.getDouble("beca")))
 						.genero(Genero.valueOf(rs.getString("genero")))
-						.facultades_Idfacultades(rs.getInt("facultades_Idfacultades"))
+						.facultades_Id(rs.getInt("facultades_Id"))
 						.numTotalAsignaturas(rs.getInt("numTotalAsignaturas"))
 						.build());
 			}
@@ -50,5 +50,22 @@ List<Estudiante> estudiantes = new ArrayList<Estudiante>();
 		
 		return estudiantes;
 	}
+	@Override
+	public void altaEstudiante(Estudiante estudiante, List<String> direccionesCorreo, List<String> numerosTelefono) {
+		
+		try (DBConexion dbConexion = new DBConexion("root", "Temp2026");
+				Connection connection = dbConexion.getConexion();) {
+			
+			dbConexion.altaEstudiante(estudiante, direccionesCorreo, numerosTelefono, connection);
+			
+		} catch (Exception e) {
+			LOG.severe("!!error al dar de alta el estudiante desde el servicio!! " + e.getMessage());
+		}
+		
+		
+		
+	}
 
+	
+	
 }

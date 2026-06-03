@@ -15,7 +15,7 @@ public record Estudiante(
 			LocalDate fechaMatriculacion, 
 			BigDecimal beca,
 			Genero genero,
-			int facultades_Idfacultades,
+			int facultades_Id,
 			int numTotalAsignaturas
 			) {
 		

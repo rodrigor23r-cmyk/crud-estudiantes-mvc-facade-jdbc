@@ -63,7 +63,7 @@
           <!--  tr>td{<=empleado.() %>}*6 -->
 		</tbody>
 	</table>
-
-
+<br>
+<a href="AltaController">Dar de alta un nuevo estudiante</a>
 </body>
 </html>

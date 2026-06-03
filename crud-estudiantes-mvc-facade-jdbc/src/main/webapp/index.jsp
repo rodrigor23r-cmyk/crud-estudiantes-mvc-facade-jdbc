@@ -8,7 +8,7 @@
 <head>
 <style>
   table {
-    width: 100%;
+    width: 90%;
     border-collapse: collapse; /* Evita que las líneas se vean dobles */
   }
   th, td {

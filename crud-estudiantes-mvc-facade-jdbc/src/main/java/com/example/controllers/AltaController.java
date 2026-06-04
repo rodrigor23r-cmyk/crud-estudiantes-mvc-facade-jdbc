@@ -106,7 +106,9 @@ public class AltaController extends HttpServlet {
 		List<Estudiante> estudiantes = estudianteServicio.getEstudiantes();
 		request.setAttribute("estudiantes", estudiantes);
 		
-		request.getRequestDispatcher("index.jsp").forward(request, response);
+		//versión mala profe: request.getRequestDispatcher("index.jsp").forward(request, response);
+		// versión buena Jeronimo: redirigir a la vista del listado de estudiantes para evitar el reenvío del formulario al refrescar la página
+		response.sendRedirect("index.jsp");
 		
 	}
 

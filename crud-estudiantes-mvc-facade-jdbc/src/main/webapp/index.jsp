@@ -45,6 +45,7 @@
 				<th>Beca</th>
 				<th>Genero</th>
 				<th>Número Asignaturas</th>
+				<th>Detalles</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -58,6 +59,7 @@
             <td><%= estudiante.beca() %></td>
             <td><%= estudiante.genero() %></td>
             <td><%= estudiante.numTotalAsignaturas() %></td>
+            <td><a href="DetallesController?idEstudiante=<%=estudiante.id()%>" >Detalles</a></td>  
                 </tr>
           <% } %>
           <!--  tr>td{<=empleado.() %>}*6 -->

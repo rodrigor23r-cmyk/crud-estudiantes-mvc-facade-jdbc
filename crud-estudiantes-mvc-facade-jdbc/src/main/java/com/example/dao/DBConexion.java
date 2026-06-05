@@ -191,4 +191,33 @@ public class DBConexion implements AutoCloseable {
 			}
 			
 		}
+
+		public ResultSet getDetallesEstudiante(int idEstudiante, Connection connection) {
+			
+			ResultSet rs = null;
+			
+			String query = "SELECT f.nombre, c.email, t.numero FROM estudiantes e \r\n"
+					+ "					LEFT JOIN facultades f ON e.facultades_id = f.id \r\n"
+					+ "					LEFT JOIN correos c ON e.id = c.estudiantes_id \r\n"
+					+ "					LEFT JOIN telefonos t ON e.id = t.estudiantes_id \r\n"
+					+ "					WHERE e.id = ?";
+			
+			PreparedStatement stmt = null;
+			
+			try {
+				stmt = connection.prepareStatement(query, 
+						ResultSet.TYPE_SCROLL_INSENSITIVE, 
+						ResultSet.CONCUR_UPDATABLE); 
+				
+				stmt.setInt(1, idEstudiante);
+				
+				rs = stmt.executeQuery();
+		
+				
+			} catch (Exception e) {
+				LOG.severe("!!error al recuperar los detalles del estudiante desde el DAO!! " + e.getMessage());
+				e.printStackTrace();
+			}
+			return rs;
+		}
 }

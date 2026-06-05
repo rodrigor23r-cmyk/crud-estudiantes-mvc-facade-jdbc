@@ -4,10 +4,13 @@ import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.example.dao.DBConexion;
+import com.example.models.DetallesEstudiante;
 import com.example.models.Estudiante;
 import com.example.models.Genero;
 
@@ -65,7 +68,50 @@ List<Estudiante> estudiantes = new ArrayList<Estudiante>();
 		
 		
 	}
+	
+	@Override
+	public DetallesEstudiante getDetallesEstudiante(int idEstudiante) {
 
+		DetallesEstudiante detallesEstudiante = null;
+		
+		try (DBConexion dbConexion = new DBConexion("root", "Temp2026");
+				Connection connection = dbConexion.getConexion();) {
+			
+		
+			
+			ResultSet rs = dbConexion.getDetallesEstudiante(idEstudiante, connection);
+			
+			String nombreFacultad = null;
+			Set<String> direccionesCorreo = new HashSet<String>();
+			Set<String> numerosTelefono = new HashSet<String>();
+			
+			if (rs.next()) {
+				
+					nombreFacultad = rs.getString("nombre");
+			}
+			rs.beforeFirst();
+			
+			while (rs.next()) {
+					
+					direccionesCorreo.add(rs.getString("email"));
+			}
+			rs.beforeFirst();
+			
+			while (rs.next()) {
+					numerosTelefono.add(rs.getString("numero"));
+			}
+			
+			detallesEstudiante = new DetallesEstudiante(nombreFacultad, direccionesCorreo, numerosTelefono);
+			
+			LOG.info("Detalles del estudiante recuperados exitosamente desde el servicio: " + detallesEstudiante);
+			
+		} catch (Exception e) {
+			LOG.severe("!!error al recuperar los detalles del estudiante desde el servicio!!" + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return detallesEstudiante;
+	}
 	
 	
 }

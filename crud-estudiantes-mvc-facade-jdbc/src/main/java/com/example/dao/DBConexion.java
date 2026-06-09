@@ -220,4 +220,142 @@ public class DBConexion implements AutoCloseable {
 			}
 			return rs;
 		}
+
+		public void modificarEstudiante(Estudiante estudiante, List<String> direccionesCorreo,
+				List<String> numerosTelefono, Connection connection) throws SQLException {
+		
+			String query1 = "UPDATE estudiantes SET `nombre` = ?, `primerApellido` = ?, `segundoApellido` = ?, `fechaMatriculacion` = ?, "
+					+ "`genero` = ?, `beca` = ?, `facultades_id` = ?, `numTotalAsignaturas` = ? WHERE id = ?";
+			// Sentencias preparadas: prepared statement. Como los procedimientos almacenados
+			String query2 = "INSERT INTO correos (`email`, `estudiantes_id`) VALUES (?,?)";
+			String query3 = "INSERT INTO telefonos (`numero`, `estudiantes_id`) VALUES (?,?)";
+			
+			String query4 = "DELETE FROM correos WHERE estudiantes_id = ?";
+			String query5 = "DELETE FROM telefonos WHERE estudiantes_id = ?";
+			
+			// todo debe hacerse en el marco de una transacción.
+			try {
+				// iniciar transacción
+				connection.setAutoCommit(false);
+				
+				PreparedStatement stmt1 = connection.prepareStatement(query1);
+				
+				stmt1.setInt(9, estudiante.id());
+				stmt1.setString(1, estudiante.nombre());
+				stmt1.setString(2, estudiante.primerApellido());
+				stmt1.setString(3, estudiante.segundoApellido());
+				stmt1.setDate(4, Date.valueOf(estudiante.fechaMatriculacion()));
+				stmt1.setString(5, estudiante.genero().name());
+				stmt1.setDouble(6, estudiante.beca().doubleValue());
+				stmt1.setInt(7, estudiante.facultades_Id());
+				stmt1.setInt(8, estudiante.numTotalAsignaturas());
+				// total de filas afectadas por la ejecución de la sentencia SQL. Si es 0, no se ha insertado ningún registro, 
+				// lo que indica que ha habido un error en la inserción.
+				int totalFilas = stmt1.executeUpdate();
+				
+				if (totalFilas != 0) {
+					
+					PreparedStatement stmt4 = connection.prepareStatement(query4);
+					stmt4.setInt(1, Math.toIntExact(estudiante.id()));
+					stmt4.executeUpdate();
+					
+					if (direccionesCorreo != null && direccionesCorreo.size() > 0) {
+						
+						PreparedStatement stmt2 = connection.prepareStatement(query2);
+
+						stmt2.setInt(2, Math.toIntExact(estudiante.id()));
+
+	// esto es ineficiente porque se ejecuta una sentencia SQL por cada correo electrónico, lo que puede generar una gran cantidad de sentencias SQL si el estudiante tiene muchos correos electrónicos. Además, cada ejecución de la sentencia SQL implica una comunicación con la base de datos, lo que puede ralentizar el proceso de inserción.
+//						for (String correo : direccionesCorreo) {
+//							stmt2.setString(1, correo);
+//							stmt2.executeUpdate();
+//						}
+						
+						for(String correo : direccionesCorreo) {
+							
+							stmt2.setString(1, correo);
+							stmt2.addBatch();
+							
+						}
+						stmt2.executeBatch();
+					}
+					
+					PreparedStatement stmt5 = connection.prepareStatement(query5);
+					stmt5.setInt(1, Math.toIntExact(estudiante.id()));
+					stmt5.executeUpdate();
+					
+					if (numerosTelefono != null && numerosTelefono.size() > 0) {
+						
+						PreparedStatement stmt3 = connection.prepareStatement(query3);
+
+						stmt3.setInt(2, Math.toIntExact(estudiante.id()));
+						
+						for(String telefono : numerosTelefono) {
+						
+							stmt3.setString(1, telefono);
+							stmt3.addBatch();
+							
+						}
+						stmt3.executeBatch();
+					}
+
+					
+					
+				}
+				
+				connection.commit();
+				
+			} catch (Exception e) {
+				LOG.severe("Error en la transacción de modificación de estudiante porque: " + e.getMessage());
+				e.printStackTrace();
+				connection.rollback();
+				LOG.info("Transacción de modificación de estudiante revertida");
+			} finally {
+				connection.setAutoCommit(true);
+			}
+			
+		}
+
+		public void deleteEstudiante(int idEstudiante, Connection connection2) throws SQLException {
+			// TODO Auto-generated method stub
+			String query1 = "DELETE FROM estudiantes WHERE id = ?";
+			String query2 = "DELETE FROM correos WHERE estudiantes_id = ?";
+			String query3 = "DELETE FROM telefonos WHERE estudiantes_id = ?";
+			
+			try {
+				connection.setAutoCommit(false);
+				
+				PreparedStatement stmt2 = connection.prepareStatement(query2);
+				stmt2.setInt(1, idEstudiante);
+				stmt2.executeUpdate();
+				
+				PreparedStatement stmt3 = connection.prepareStatement(query3);
+				stmt3.setInt(1, idEstudiante);
+				stmt3.executeUpdate();
+				
+				PreparedStatement stmt1 = connection.prepareStatement(query1);
+				stmt1.setInt(1, idEstudiante);
+				int totalFilas = stmt1.executeUpdate();
+				
+				if (totalFilas != 0) {
+					LOG.info("Empleado con id " + idEstudiante + " eliminado correctamente");
+				} else {
+					LOG.warning("No se ha encontrado ningún empleado con id " + idEstudiante + " para eliminar");
+				}
+				
+				connection.commit();
+				
+				} catch (Exception e) {
+				LOG.severe("Error en la transacción de eliminación de estudiante porque: " + e.getMessage());
+				e.printStackTrace();
+				connection.rollback();
+				LOG.info("Transacción de eliminación de estudiante revertida");
+			
+				} finally {
+				connection.setAutoCommit(true);
+				
+				}
+					
+			
+		}
 }

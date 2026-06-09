@@ -11,4 +11,9 @@ public interface EstudianteService {
 	public abstract void altaEstudiante(Estudiante estudiante, List<String> direccionesCorreo,
 			List<String> numerosTelefono);
 	public abstract DetallesEstudiante getDetallesEstudiante(int idEstudiante);
+
+	public abstract void modificarEstudiante(Estudiante estudiante, List<String> direccionesCorreo,
+			List<String> numerosTelefono);
+
+	public abstract void deleteEstudiante(int idEstudiante);
 }

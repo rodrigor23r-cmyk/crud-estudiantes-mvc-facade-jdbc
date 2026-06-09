@@ -44,7 +44,7 @@ public class DetallesController extends HttpServlet {
 		request.setAttribute("estudiante", estudiante);
 		DetallesEstudiante detallesEstudiante = estudianteServicio.getDetallesEstudiante(idEstudiante);
 		
-		request.setAttribute("detallesEstudiante", estudianteServicio.getDetallesEstudiante(idEstudiante));
+		request.setAttribute("detallesEstudiante", detallesEstudiante);
 		request.getRequestDispatcher("views/detallesEstudiante.jsp").forward(request, response);
 	}
 

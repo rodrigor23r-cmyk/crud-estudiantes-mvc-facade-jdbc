@@ -112,6 +112,34 @@ List<Estudiante> estudiantes = new ArrayList<Estudiante>();
 		
 		return detallesEstudiante;
 	}
-	
-	
+	@Override
+	public void modificarEstudiante(Estudiante estudiante, List<String> direccionesCorreo,
+			List<String> numerosTelefono) {
+		try (DBConexion dbConexion = new DBConexion("root", "Temp2026");
+				Connection connection = dbConexion.getConexion();) {
+			
+			dbConexion.modificarEstudiante(estudiante, direccionesCorreo, numerosTelefono, connection);
+			
+		} catch (Exception e) {
+			LOG.severe("!!error al modificar el estudiante desde el servicio!! " + e.getMessage());
+		}
+		
+	}
+	@Override
+	public void deleteEstudiante(int idEstudiante) {
+		
+		try (DBConexion dbConexion = new DBConexion("root", "Temp2026");
+				Connection connection = dbConexion.getConexion();) {
+			
+			dbConexion.deleteEstudiante(idEstudiante, connection);
+			
+		} catch (Exception e) {
+			LOG.severe("!!error al eliminar el estudiante desde el servicio!! " + e.getMessage());
+		}
+		
+	}
+		
 }
+	
+	
+

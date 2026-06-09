@@ -46,6 +46,9 @@
 				<th>Genero</th>
 				<th>Número Asignaturas</th>
 				<th>Detalles</th>
+				<th>Modificar</th>
+				<th>Borrar</th>
+				
 			</tr>
 		</thead>
 		<tbody>
@@ -59,7 +62,9 @@
             <td><%= estudiante.beca() %></td>
             <td><%= estudiante.genero() %></td>
             <td><%= estudiante.numTotalAsignaturas() %></td>
-            <td><a href="DetallesController?idEstudiante=<%=estudiante.id()%>" >Detalles</a></td>  
+            <td><a href="DetallesController?idEstudiante=<%=estudiante.id()%>" >Detalles</a></td>
+            <td><a href="UpdateController?idEstudiante=<%=estudiante.id()%>" >Modificar</a></td>
+            <td><a href="DeleteController?idEstudiante=<%=estudiante.id() %>" onclick="return confirm('¿Estás seguro de que deseas borrar este estudiante?');">Borrar</a></td>
                 </tr>
           <% } %>
           <!--  tr>td{<=empleado.() %>}*6 -->
